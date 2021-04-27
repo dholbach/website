@@ -1,0 +1,5 @@
+[[redirects]]
+  from = "https://toolkit.fluxcd.io"
+  to = "https://fluxcd.io/docs/"
+  status = 301
+  force = true
