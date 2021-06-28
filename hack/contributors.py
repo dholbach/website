@@ -8,7 +8,9 @@ import sys
 
 if os.path.exists('/opt/hostedtoolcache/Python'):
     version = sys.version.split()[0]
+    print(version)
     location = '/opt/hostedtoolcache/Python/{}/*/lib/python*/site-packages'.format(version)
+    print(location)
     local_py_paths = glob.glob(location)
     print(local_py_paths)
     if local_py_paths and local_py_paths[0] not in sys.path:
