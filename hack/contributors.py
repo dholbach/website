@@ -7,8 +7,10 @@ import sys
 # I hate doing this... but we've got to make this work on Github Actions...
 if os.path.exists('/opt/hostedtoolcache/Python'):
     local_py_paths = glob.glob('/opt/hostedtoolcache/Python/3.*/*/lib/python*/site-packages')
+    print(local_py_paths)
     if local_py_paths and local_py_paths[0] not in sys.path:
         sys.path.append(local_py_paths[0])
+    print(sys.path)
 
 from github import (Github, GithubException)
 
