@@ -7,9 +7,9 @@ import sys
 # I hate doing this... but we've got to make this work on Github Actions...
 
 if os.path.exists('/opt/hostedtoolcache/Python'):
-    version = sys.version.split()[0]
-    print(version)
-    location = '/opt/hostedtoolcache/Python/{}/*/lib/python*/site-packages'.format(version)
+    version_info = sys.version_info
+    location = '/opt/hostedtoolcache/Python/{}.{}.*/*/lib/python*/site-packages'.format(
+        version_info.major, version_info.minor)
     print(location)
     local_py_paths = glob.glob(location)
     print(local_py_paths)
