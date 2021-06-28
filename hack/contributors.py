@@ -1,12 +1,14 @@
 #!/usr/bin/python
 
+import glob
 import os
 import sys
 
 # I hate doing this... but we've got to make this work on Github Actions...
-local_py_path = '/opt/hostedtoolcache/Python/3.8.10/x64/lib/python3.8/site-packages/'
-if local_py_path not in sys.path:
-    sys.path.append(local_py_path)
+if os.path.exists('/opt/hostedtoolcache/Python'):
+    local_py_paths = glob.glob('/opt/hostedtoolcache/Python/3.*/*/lib/python*/site-packages')
+    if local_py_paths and local_py_paths[0] not in sys.path:
+        sys.path.append(local_py_paths[0])
 
 from github import (Github, GithubException)
 
