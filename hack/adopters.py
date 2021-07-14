@@ -65,23 +65,37 @@ def write_card_text(f, company_name, company_url, company_logo):
     card_text += '{{% /card %}}\n'
     f.write(card_text)
 
+def html_for_slice(data_slice, active=False):
+    html = ""
+    if active:
+        html += """
+    <div class="carousel-item active">"""
+    else:
+        html += """
+    <div class="carousel-item">"""
+    for entry in data_slice:
+        html += """
+        <img class="w-20" src="{logo}" alt="{caption}">
+        <span class="carousel-item-caption">{caption}</span>""".format(
+            logo=entry['logo'],
+            caption=entry['name'] if 'needs-name' in entry and \
+                entry['needs-name'] else '')
+    html += """
+    </div>"""
+    return html
 
 def write_adopters_section_for_landing_page(data):
     html = ""
     random.shuffle(data)
-    data = [entry for entry in data if not entry['logo'].endswith(DEFAULT_LOGO)]
-
-    for entry in data:
-        html += \
-            """
-    <div class="carousel-item {active}">
-        <img class="d-block w-100" src="{logo}" alt="{caption}">
-        <span class="carousel-item-caption">{caption}</span>
-    </div>
-""".format(active='active' if data.index(entry) == 0 else '',
-        logo=entry['logo'],
-        caption=entry['name'] if 'needs-name' in entry and \
-                        entry['needs-name'] else '')
+    data = [entry for entry in data
+            if not entry['logo'].endswith(DEFAULT_LOGO)]
+    full_slices = int(len(data)/5)
+    for i in range(full_slices):
+        start = i*5
+        slice = data[start:start+5]
+        html += html_for_slice(slice, i == 0)
+    if len(data) % 5 != 0:
+        html += html_for_slice(data[full_slices*5:])
 
     out_file = os.path.join(content_dir, 'adopters_carousel_include.html')
     if os.path.exists(out_file):
